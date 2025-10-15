@@ -9,14 +9,10 @@ class WeatherController < ApplicationController
 
     if result[:error]
       flash[:error] = result[:error]
-      render :index
     else
-      @current_weather = result[:weather]["current"]
-      @forecast = result[:weather]["forecast"]["forecastday"]
-      @from_cache = result[:from_cache]
-      @remaining_time = result[:remaining_time]
-      render :index
+      @weather = result
     end
+    render :index
   end
 
   private
