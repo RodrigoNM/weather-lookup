@@ -11,4 +11,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  root "weather#index"
+  get "weather_for_zip_code", to: "weather#weather_for_zip_code", as: "show_weather"
 end

@@ -1,0 +1,45 @@
+<h1>Weather Lookup</h1>
+
+<%= form_with url: show_weather_path, method: :get do |form| %>
+  <%= form.label :zip_code, 'Enter ZIP code' %>
+  <%= form.text_field :zip_code, value: params[:zip_code], required: true %>
+  <%= form.submit 'Get Weather' %>
+<% end %>
+
+<% if flash[:error] %>
+  <p style="color: red"><%= flash[:error] %></p>
+<% end %>
+
+<% if @current_weather %>
+  <h2>Weather for <%= params[:zip_code] %></h2>
+  <% if @from_cache %>
+    <p><em>(Data was fetched from cache, <%= (@remaining_time / 60).to_i %> minutes left)</em></p>
+  <% else %>
+    <p><em>(Data was fetched from the API)</em></p>
+  <% end %>
+  
+  <% if @current_weather['error'] %>
+    <p style="color: red"><%= @current_weather['error'] %></p>
+  <% else %>
+    <p><strong>Condition:</strong> <%= @current_weather['condition']['text'] %></p>
+    <%= image_tag("https:#{@current_weather['condition']['icon']}", alt: @current_weather['condition']['text'], class: "condition-icon") %>
+    <p><strong>Temperature:</strong> <%= @current_weather['temp_f'] %>°F / <%= @current_weather['temp_c'] %>°C</p>
+    <p><strong>Feels Like:</strong> <%= @current_weather['feelslike_f'] %>°F / <%= @current_weather['feelslike_c'] %>°C</p>
+    <p><strong>High:</strong> <%= @current_weather['heatindex_f'] %>°F / <%= @current_weather['heatindex_c'] %>°C</p>
+    <p><strong>Low:</strong> <%= @current_weather['dewpoint_f'] %>°F / <%= @current_weather['dewpoint_c'] %>°C</p>
+    <p><strong>Wind Speed:</strong> <%= @current_weather['wind_mph'] %> mph / <%= @current_weather["wind_kph"] %> kpm</p>
+    <p><strong>Humidity:</strong> <%= @current_weather['humidity'] %>%</p>
+
+    <h3>Extended Forecast</h3>
+    <ul>
+      <% @forecast.each do |day| %>
+        <li>
+          <strong><%= day['date'] %>:</strong> 
+          <%= day['day']['condition']['text'] %> 
+          (High: <%= day['day']['maxtemp_f'] %>°F / <%= day['day']['maxtemp_c'] %>°C, Low: <%= day['day']['mintemp_f'] %>°F / <%= day['day']['mintemp_c'] %>°C)
+          <%= image_tag("https:#{day['day']['condition']['icon']}", alt: day['day']['condition']['text']) %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>

@@ -27,9 +27,8 @@ Rails.application.configure do
 
   # Change to :null_store to avoid any caching.
   config.cache_store = :redis_cache_store, {
-    url: "redis://localhost:6379/0",
-    namespace: "weather_lookup_cache",
-    expires_in: 30.minutes
+    url: ENV["REDIS_URL"],
+    namespace: "weather_lookup_cache"
   }
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
