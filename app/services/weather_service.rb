@@ -17,7 +17,7 @@ class WeatherService
       return cached_data.merge(
         {
           from_cache: true,
-          remaining_time: remaining_time
+          remaining_time: calculate_remaining_time(remaining_time)
         }
       )
     end
@@ -31,10 +31,16 @@ class WeatherService
     weather_data.merge(
       {
         from_cache: false,
-        remaining_time: (CACHE_EXPIRATION.to_i / 60).to_i
+        remaining_time: calculate_remaining_time(CACHE_EXPIRATION)
       }
     )
   rescue Weather::V1::Client::WeatherServiceApiError => e
     { error: e.message }
+  end
+
+  private
+
+  def calculate_remaining_time(remaining_time)
+    (remaining_time.to_i / 60).to_i
   end
 end
