@@ -55,6 +55,10 @@ group :development, :test do
   gem "rspec-rails"
 
   gem "dotenv"
+
+  gem "httparty"
+
+  gem "webmock"
 end
 
 group :development do

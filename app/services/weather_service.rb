@@ -10,7 +10,6 @@ class WeatherService
   def get_weather
     cached_data = @cache.read(@zip_code)
 
-    puts "GET_WEATHER: #{cached_data}"
     if cached_data
       remaining_time = [ CACHE_EXPIRATION - (Time.now - cached_data[:cached_at]), 0 ].max
 
