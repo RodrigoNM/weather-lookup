@@ -34,6 +34,7 @@ class WeatherService
       }
     )
   rescue Weather::V1::Client::WeatherServiceApiError => e
+    Rails.logger.error "[WeatherService] Error fetching weather for zip code #{@zip_code}: #{e.class} - #{e.message}"
     { error: e.message }
   end
 
